@@ -13,7 +13,7 @@ module.exports = {
                 "node": true
             },
             "files": [
-                ".eslintrc.{js,cjs}"
+                ".eslintrc.{js,jsx,cjs}"
             ],
             "parserOptions": {
                 "sourceType": "script"
