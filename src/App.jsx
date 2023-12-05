@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import './index.css';
+import React, { useState } from "react";
 
-function App() {
+function Todolist() {
+  const [task, setTask] = useState('');
+  const [taskList, setTaskList] = useState([]);
+
+  function AddTaskfnc() {
+    if (task.trim() !== '') {
+      setTaskList([...taskList, task]);
+      setTask(''); 
+      console.log(AddTaskfnc)
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className="text-red-500">
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     
+    <div className="Addtask">
+    <h1 className='text-3xl text-red-500 text-center'>Todo list</h1>
+    <input type="text" value={task} onChange={(e) => setTask(e.target.value)} />
+     <button className='text' onClick={AddTaskfnc}> Add task  </button>
+     <ul>
+        {taskList.map((taskItem, index) => (
+           <li key={index}>{taskItem}</li>
+        
+        ))} 
+      </ul>
     </div>
+    
   );
 }
 
-export default App;
+export default Todolist;
