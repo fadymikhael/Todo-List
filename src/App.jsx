@@ -34,23 +34,25 @@ function Todolist() {
   }
 
   return (
-    <div className="Addtask">
-      <h1 className='text-3xl text-red-500 text-center'>Todo list</h1>
-      <input onChange={(e) => setTask(e.target.value)} type="text" value={task} />
-      <button className='text' onClick={AddTaskfnc}>Add task</button>
+    <div className="flex flex-col items-center ">
+      <h1 className='text-center text-red-500 text-3xl mb-4'>Todo list</h1>
+      <div className='mb-4 flex items-center'>
+        <input className="border border-black px-2 py-1 rounded" onChange={(e) => setTask(e.target.value)} type="text" value={task} />
+        <button className='bg-green-500 ml-4 px-3 py-1 rounded text-white font-semibold' onClick={AddTaskfnc}>Add task</button>
+      </div>
       <div>
         {taskList.map((taskItem, index) => (
-          <div key={index}>
+          <div key={index} className="bg-gray-200 p-3 mb-5 rounded-md">
             {editIndex === index ? (
               <>
                 <input onChange={(e) => setEditdTask(e.target.value)} type="text" value={editdTask} />
-                <button onClick={SaveTask}>Save</button>
+                <button className="bg-blue-500 ml-2 px-3 py-1 rounded text-white font-semibold" onClick={SaveTask}>Save</button>
               </>
             ) : (
               <>
                 {taskItem}
-                <button onClick={() => DeleteTask(index)}>Delete Task</button>
-                <button onClick={() => EditTask(index)}>Edit Task</button>
+                <button className="bg-red-500 ml-2 px-3 py-1 rounded text-white font-semibold" onClick={() => DeleteTask(index)}>Delete Task</button>
+                <button className="bg-blue-500 ml-2 px-3 py-1 rounded text-white font-semibold" onClick={() => EditTask(index)}>Edit Task</button>
               </>
             )}
           </div>
