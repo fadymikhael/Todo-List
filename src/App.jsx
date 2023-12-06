@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import './index.css';   
+import './App.css';   
 
 function Todolist() {
   const [task, setTask] = useState('');
@@ -11,6 +12,13 @@ function Todolist() {
     if (task.trim() !== '') {
       setTaskList([...taskList, task]);
       setTask('');
+    }
+  }
+
+  function confirmDeleteTask(index) {
+    const confirmation = window.confirm("Are you sure you want to delete this task?");
+    if (confirmation) {
+      DeleteTask(index);
     }
   }
 
@@ -42,7 +50,7 @@ function Todolist() {
       </div>
       <div>
         {taskList.map((taskItem, index) => (
-          <div key={index} className="bg-gray-200 p-3 mb-5 rounded-md">
+          <div key={index} className="bg-gray-200 p-2 mb-2 rounded-md">
             {editIndex === index ? (
               <>
                 <input onChange={(e) => setEditdTask(e.target.value)} type="text" value={editdTask} />
@@ -51,7 +59,7 @@ function Todolist() {
             ) : (
               <>
                 {taskItem}
-                <button className="bg-red-500 ml-2 px-3 py-1 rounded text-white font-semibold" onClick={() => DeleteTask(index)}>Delete Task</button>
+                <button className="bg-red-500 ml-2 px-3 py-1 rounded text-white font-semibold" onClick={() => confirmDeleteTask(index)}>Delete Task</button>
                 <button className="bg-blue-500 ml-2 px-3 py-1 rounded text-white font-semibold" onClick={() => EditTask(index)}>Edit Task</button>
               </>
             )}
