@@ -1,0 +1,39 @@
+{ 
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+    ],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "babelOptions": {
+            "presets": ["@babel/preset-react"]
+        },
+        "requireConfigFile": false,
+        "project": true,
+        "jsx": true,
+        "ecmaVersion": 2023,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "react-hooks"
+    ],
+    "rules": {
+    "react/self-closing-comp": "error",
+    "react/boolean-prop-naming": "error",
+    "react/jsx-fragments": ["error", "syntax"],
+    "react/jsx-no-useless-fragment": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+    }
+}
