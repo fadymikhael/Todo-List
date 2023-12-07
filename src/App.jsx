@@ -15,7 +15,6 @@ function Todolist() {
       setTask('')
     }
   }
-
   function confirmDeleteTask(index) {
     const confirmation = window.confirm('Are you sure you want to delete this task?')
     if (confirmation) {
@@ -57,7 +56,7 @@ function Todolist() {
         </div>
         <div>
           {taskList.map((taskItem, index) => (
-            <div key={index} className="bg-gray-200 p-3 mb-4 mr-1 ml-1 rounded-md">
+            <div key={index} className="bg-gray-200 p-3 mb-4 mx-1 rounded-md">
               {editIndex === index ? (
                 <>
                   <input

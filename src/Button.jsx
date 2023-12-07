@@ -1,11 +1,10 @@
 import React from 'react'
-import './index.css'
 import PropTypes from 'prop-types'
 
 const Button = ({ text, onClick, type, index }) => {
   return (
     <button
-      className={`px-2 py-2 mr-2 rounded font-semibold text-white ${type}`}
+      className={`p-2 mr-2 rounded font-semibold text-white ${type}`}
       onClick={() => onClick(index)}
     >
       {text}
