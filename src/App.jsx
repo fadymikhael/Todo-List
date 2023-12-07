@@ -1,30 +1,13 @@
 import React, { useState } from 'react'
 import './index.css'
 import './App.css'
-import PropTypes from 'prop-types'
+import Button from './Button.jsx'
 
 function Todolist() {
   const [task, setTask] = useState('')
   const [taskList, setTaskList] = useState([])
   const [editIndex, setEditIndex] = useState()
   const [editdTask, setEditdTask] = useState('')
-
-  const Button = ({ texte, onClick, type, index }) => {
-    return (
-      <button
-        className={`px-2 py-2 mr-2 rounded font-semibold text-white ${type}`}
-        onClick={() => onClick(index)}
-      >
-        {texte}
-      </button>
-    )
-  }
-  Button.propTypes = {
-    texte: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-    type: PropTypes.string.isRequired,
-    index: PropTypes.number,
-  }
 
   function AddTaskfnc() {
     if (task.trim() !== '') {
@@ -70,7 +53,7 @@ function Todolist() {
             type="text"
             value={task}
           />
-          <Button texte="Add task" onClick={AddTaskfnc} type="bg-green-500" />
+          <Button text="Add task" onClick={AddTaskfnc} type="bg-green-500" />
         </div>
         <div>
           {taskList.map((taskItem, index) => (
@@ -83,18 +66,18 @@ function Todolist() {
                     type="text"
                     value={editdTask}
                   />
-                  <Button texte="Save" onClick={SaveTask} type="bg-blue-500" index={index} />
+                  <Button text="Save" onClick={SaveTask} type="bg-blue-500" index={index} />
                 </>
               ) : (
                 <>
                   {taskItem}
                   <Button
-                    texte="Delete task"
+                    text="Delete task"
                     onClick={confirmDeleteTask}
                     type="bg-red-500"
                     index={index}
                   />
-                  <Button texte="Edit task" onClick={EditTask} type="bg-blue-500" index={index} />
+                  <Button text="Edit task" onClick={EditTask} type="bg-blue-500" index={index} />
                 </>
               )}
             </div>
@@ -104,5 +87,4 @@ function Todolist() {
     </div>
   )
 }
-
 export default Todolist
