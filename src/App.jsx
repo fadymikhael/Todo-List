@@ -6,39 +6,47 @@ import Button from './Button.jsx'
 function Todolist() {
   const [task, setTask] = useState('')
   const [taskList, setTaskList] = useState([])
-  const [editIndex, setEditIndex] = useState()
-  const [editdTask, setEditdTask] = useState('')
+  const [editIndex, setEditIndex] = useState(-1)
+  const [editedTask, setEditedTask] = useState('')
 
-  function AddTaskfnc() {
+  function addTask() {
     if (task.trim() !== '') {
-      setTaskList([...taskList, task])
+      const currentDate = new Date().toLocaleString()
+      const newTask = {
+        task: task,
+        dateTime: currentDate,
+      }
+      setTaskList([...taskList, newTask])
       setTask('')
     }
   }
+
   function confirmDeleteTask(index) {
     const confirmation = window.confirm('Are you sure you want to delete this task?')
     if (confirmation) {
-      DeleteTask(index)
+      deleteTask(index)
     }
   }
 
-  function DeleteTask(index) {
+  function deleteTask(index) {
     const updatedTasks = [...taskList]
     updatedTasks.splice(index, 1)
     setTaskList(updatedTasks)
   }
 
-  function EditTask(index) {
+  function editTask(index) {
     setEditIndex(index)
-    setEditdTask(taskList[index])
+    setEditedTask(taskList[index].task)
   }
 
-  function SaveTask() {
+  function saveTask() {
     const updatedTasks = [...taskList]
-    updatedTasks[editIndex] = editdTask
+    const currentDate = new Date().toLocaleString()
+    updatedTasks[editIndex].task = editedTask
+    updatedTasks[editIndex].dateTime = currentDate
     setTaskList(updatedTasks)
-    setEditdTask('')
-    setEditIndex()
+    setEditIndex(-1)
+    setEditedTask('')
   }
 
   return (
@@ -47,12 +55,12 @@ function Todolist() {
         <h1 className="text-center text-3xl mb-4 font-serif font-semibold">Todo list</h1>
         <div className="mb-3 flex items-center">
           <input
-            className="border border-black px-3 py-2 mr-2  rounded "
+            className="border border-black px-3 py-2 mr-2 rounded"
             onChange={(e) => setTask(e.target.value)}
             type="text"
             value={task}
           />
-          <Button text="Add task" onClick={AddTaskfnc} type="bg-green-500" />
+          <Button text="Add task" onClick={addTask} type="bg-green-500" />
         </div>
         <div>
           {taskList.map((taskItem, index) => (
@@ -61,22 +69,24 @@ function Todolist() {
                 <>
                   <input
                     className="border border-black px-3 py-2 mr-2 rounded"
-                    onChange={(e) => setEditdTask(e.target.value)}
+                    onChange={(e) => setEditedTask(e.target.value)}
                     type="text"
-                    value={editdTask}
+                    value={editedTask}
                   />
-                  <Button text="Save" onClick={SaveTask} type="bg-blue-500" index={index} />
+                  <Button text="Save" onClick={saveTask} type="bg-blue-500" />
                 </>
               ) : (
                 <>
-                  {taskItem}
-                  <Button
-                    text="Delete task"
-                    onClick={confirmDeleteTask}
-                    type="bg-red-500"
-                    index={index}
-                  />
-                  <Button text="Edit task" onClick={EditTask} type="bg-blue-500" index={index} />
+                  <p className="mb-2 font-semibold">Task: {taskItem.task}</p>
+                  <p className="mb-2 font-semibold">Date & Time: {taskItem.dateTime}</p>
+                  <div className="flex">
+                    <Button
+                      text="Delete task"
+                      onClick={() => confirmDeleteTask(index)}
+                      type="bg-red-500"
+                    />
+                    <Button text="Edit task" onClick={() => editTask(index)} type="bg-blue-500" />
+                  </div>
                 </>
               )}
             </div>
