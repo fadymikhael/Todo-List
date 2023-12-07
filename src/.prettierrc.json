@@ -1,0 +1,13 @@
+{
+  "endOfLine": "lf",
+  "printWidth": 100,
+  "semi": false,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "arrowParens": "always",
+  "importOrder": ["server-only", "react", "^@(.)/(.)$", "^next/(.)", "^next-(.)", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
