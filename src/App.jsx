@@ -65,13 +65,22 @@ function Todolist() {
     } else if (sortType === SortTypes.OLD_DATE) {
       sortedTasks.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
     } else if (sortType === SortTypes.ALPHABETICAL_AZ) {
-      sortedTasks.sort((a, z) => a.task.localeCompare(z.task))
+      sortedTasks.sort((a, z) => customAlphabeticalSort(a.task, z.task))
     } else if (sortType === SortTypes.ALPHABETICAL_ZA) {
-      sortedTasks.sort((a, z) => z.task.localeCompare(a.task))
+      sortedTasks.sort((a, z) => customAlphabeticalSort(a.task, z.task))
     }
     setTaskList(sortedTasks)
   }
+  function customAlphabeticalSort(strA, strB) {
+    const lowerA = strA.toLowerCase()
+    const lowerB = strB.toLowerCase()
 
+    if (lowerA < lowerB) return -1
+    if (lowerA > lowerB) return 1
+    if (strA < strB) return -1
+    if (strA > strB) return 1
+    return 0
+  }
   return (
     <div className="flex justify-center items-start h-screen">
       <div className="w-80 h-70 flex flex-col items-center bg-red-400 mt-4 rounded-md">
