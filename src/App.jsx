@@ -8,6 +8,7 @@ function Todolist() {
   const [taskList, setTaskList] = useState([])
   const [editIndex, setEditIndex] = useState(-1)
   const [editedTask, setEditedTask] = useState('')
+  const [sortType, setSortType] = useState('RecentDate')
 
   function addTask() {
     if (task.trim() !== '') {
@@ -48,6 +49,17 @@ function Todolist() {
     setEditIndex(-1)
     setEditedTask('')
   }
+  function sortTasks(sortType) {
+    const sortedTasks = [...taskList]
+    if (sortType === 'RecentDate') {
+      sortedTasks.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
+    } else if (sortType === 'oldDate') {
+      sortedTasks.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
+    } else if (sortType === 'ab') {
+      sortedTasks.sort((a, b) => a.task.localeCompare(b.task))
+    }
+    setTaskList(sortedTasks)
+  }
 
   return (
     <div className="flex justify-center items-start h-screen">
@@ -61,6 +73,22 @@ function Todolist() {
             value={task}
           />
           <Button text="Add task" onClick={addTask} type="bg-green-500" />
+        </div>
+        <div>
+          <label>Sort tasks by : </label>
+          <select
+            className=" mx-2"
+            name="tasks"
+            value={sortType}
+            onChange={(e) => {
+              setSortType(e.target.value)
+              sortTasks(e.target.value)
+            }}
+          >
+            <option value="RecentDate">Newest</option>
+            <option value="oldDate">Oldest</option>
+            <option value="ab">Alphabetically</option>
+          </select>
         </div>
         <div>
           {taskList.map((taskItem, index) => (
