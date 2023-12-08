@@ -58,13 +58,13 @@ function Todolist() {
   }
   function sortTasks(sortType, updateTasklist) {
     const sortedTasks = [...updateTasklist]
-    if (sortType === 'RecentDate') {
+    if (sortType === SortTypes.RECENT_DATE) {
       sortedTasks.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
-    } else if (sortType === 'oldDate') {
+    } else if (sortType === SortTypes.OLD_DATE) {
       sortedTasks.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
-    } else if (sortType === 'az') {
+    } else if (sortType === SortTypes.ALPHABETICAL_AZ) {
       sortedTasks.sort((a, z) => a.task.localeCompare(z.task))
-    } else if (sortType === 'za') {
+    } else if (sortType === SortTypes.ALPHABETICAL_ZA) {
       sortedTasks.sort((a, z) => z.task.localeCompare(a.task))
     }
     setTaskList(sortedTasks)
