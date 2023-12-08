@@ -2,12 +2,18 @@ import React, { useState } from 'react'
 import './index.css'
 import './App.css'
 import Button from './Button.jsx'
-
+const SortTypes = {
+  RECENT_DATE: 'RecentDate',
+  OLD_DATE: 'oldDate',
+  ALPHABETICAL_AZ: 'az',
+  ALPHABETICAL_ZA: 'za',
+}
 function Todolist() {
   const [task, setTask] = useState('')
   const [taskList, setTaskList] = useState([])
   const [editIndex, setEditIndex] = useState(-1)
   const [editedTask, setEditedTask] = useState('')
+  const [sortType, setSortType] = useState(SortTypes.RECENT_DATE)
 
   function addTask() {
     if (task.trim() !== '') {
@@ -16,8 +22,10 @@ function Todolist() {
         task: task,
         dateTime: currentDate,
       }
-      setTaskList([...taskList, newTask])
+      const updateTasklist = [...taskList, newTask]
+      setTaskList([...updateTasklist])
       setTask('')
+      sortTasks(sortType, updateTasklist)
     }
   }
 
@@ -48,6 +56,19 @@ function Todolist() {
     setEditIndex(-1)
     setEditedTask('')
   }
+  function sortTasks(sortType, updateTasklist) {
+    const sortedTasks = [...updateTasklist]
+    if (sortType === SortTypes.RECENT_DATE) {
+      sortedTasks.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
+    } else if (sortType === SortTypes.OLD_DATE) {
+      sortedTasks.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
+    } else if (sortType === SortTypes.ALPHABETICAL_AZ) {
+      sortedTasks.sort((a, z) => a.task.localeCompare(z.task))
+    } else if (sortType === SortTypes.ALPHABETICAL_ZA) {
+      sortedTasks.sort((a, z) => z.task.localeCompare(a.task))
+    }
+    setTaskList(sortedTasks)
+  }
 
   return (
     <div className="flex justify-center items-start h-screen">
@@ -61,6 +82,23 @@ function Todolist() {
             value={task}
           />
           <Button text="Add task" onClick={addTask} type="bg-green-500" />
+        </div>
+        <div>
+          <label>Sort tasks by : </label>
+          <select
+            className=" mx-2"
+            name="tasks"
+            value={sortType}
+            onChange={(e) => {
+              setSortType(e.target.value)
+              sortTasks(e.target.value, taskList)
+            }}
+          >
+            <option value={SortTypes.RECENT_DATE}>Newest</option>
+            <option value={SortTypes.OLD_DATE}>Oldest</option>
+            <option value={SortTypes.ALPHABETICAL_AZ}>Alphabetically A-Z</option>
+            <option value={SortTypes.ALPHABETICAL_ZA}>Alphabetically Z-A</option>
+          </select>
         </div>
         <div>
           {taskList.map((taskItem, index) => (
