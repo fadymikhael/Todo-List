@@ -2,13 +2,18 @@ import React, { useState } from 'react'
 import './index.css'
 import './App.css'
 import Button from './Button.jsx'
-
+const SortTypes = {
+  RECENT_DATE: 'RecentDate',
+  OLD_DATE: 'oldDate',
+  ALPHABETICAL_AZ: 'az',
+  ALPHABETICAL_ZA: 'za',
+}
 function Todolist() {
   const [task, setTask] = useState('')
   const [taskList, setTaskList] = useState([])
   const [editIndex, setEditIndex] = useState(-1)
   const [editedTask, setEditedTask] = useState('')
-  const [sortType, setSortType] = useState('RecentDate')
+  const [sortType, setSortType] = useState(SortTypes.RECENT_DATE)
 
   function addTask() {
     if (task.trim() !== '') {
@@ -17,8 +22,10 @@ function Todolist() {
         task: task,
         dateTime: currentDate,
       }
-      setTaskList([...taskList, newTask])
+      const updateTasklist = [...taskList, newTask]
+      setTaskList([...updateTasklist])
       setTask('')
+      sortTasks(sortType, updateTasklist)
     }
   }
 
@@ -49,14 +56,16 @@ function Todolist() {
     setEditIndex(-1)
     setEditedTask('')
   }
-  function sortTasks(sortType) {
-    const sortedTasks = [...taskList]
+  function sortTasks(sortType, updateTasklist) {
+    const sortedTasks = [...updateTasklist]
     if (sortType === 'RecentDate') {
       sortedTasks.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
     } else if (sortType === 'oldDate') {
       sortedTasks.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
-    } else if (sortType === 'ab') {
-      sortedTasks.sort((a, b) => a.task.localeCompare(b.task))
+    } else if (sortType === 'az') {
+      sortedTasks.sort((a, z) => a.task.localeCompare(z.task))
+    } else if (sortType === 'za') {
+      sortedTasks.sort((a, z) => z.task.localeCompare(a.task))
     }
     setTaskList(sortedTasks)
   }
@@ -82,12 +91,13 @@ function Todolist() {
             value={sortType}
             onChange={(e) => {
               setSortType(e.target.value)
-              sortTasks(e.target.value)
+              sortTasks(e.target.value, taskList)
             }}
           >
-            <option value="RecentDate">Newest</option>
-            <option value="oldDate">Oldest</option>
-            <option value="ab">Alphabetically</option>
+            <option value={SortTypes.RECENT_DATE}>Newest</option>
+            <option value={SortTypes.OLD_DATE}>Oldest</option>
+            <option value={SortTypes.ALPHABETICAL_AZ}>Alphabetically A-Z</option>
+            <option value={SortTypes.ALPHABETICAL_ZA}>Alphabetically Z-A</option>
           </select>
         </div>
         <div>
