@@ -9,9 +9,17 @@ const TaskItem = ({
   editedTask,
   setEditedTask,
   saveTask,
+  setEditIndex,
   confirmDeleteTask,
-  editTask,
 }) => {
+  const editTask = (index) => {
+    setEditIndex(index)
+    setEditedTask(taskItem.task)
+  }
+  const handleDeleteTask = () => {
+    confirmDeleteTask(index)
+  }
+
   return (
     <div key={index} className="bg-gray-200 p-3 mb-4 mx-1 rounded-md">
       {editIndex === index ? (
@@ -29,7 +37,7 @@ const TaskItem = ({
           <p className="mb-2 font-semibold">Task: {taskItem.task}</p>
           <p className="mb-2 font-semibold">Date & Time: {taskItem.dateTime}</p>
           <div className="flex">
-            <Button text="Delete task" onClick={() => confirmDeleteTask(index)} type="bg-red-500" />
+            <Button text="Delete task" onClick={handleDeleteTask} type="bg-red-500" />
             <Button text="Edit task" onClick={() => editTask(index)} type="bg-blue-500" />
           </div>
         </>
@@ -48,8 +56,9 @@ TaskItem.propTypes = {
   editedTask: PropTypes.string.isRequired,
   setEditedTask: PropTypes.func.isRequired,
   saveTask: PropTypes.func.isRequired,
-  confirmDeleteTask: PropTypes.func.isRequired,
-  editTask: PropTypes.func.isRequired,
+  setEditIndex: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired, // PropType pour deleteTask
+  confirmDeleteTask: PropTypes.func.isRequired, // PropType pour confirmDeleteTask
 }
 
 export default TaskItem

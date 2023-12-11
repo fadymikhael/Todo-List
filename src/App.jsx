@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import './index.css'
 import './App.css'
-import Button from './Button.jsx'
-import TaskItem from './TaskItem.jsx'
+import Button from './Components/Button.jsx'
+import TaskItem from './Components/TaskItem.jsx'
 
 const SortTypes = {
   RECENT_DATE: 'RecentDate',
@@ -44,11 +44,6 @@ function Todolist() {
     setTaskList(updatedTasks)
   }
 
-  function editTask(index) {
-    setEditIndex(index)
-    setEditedTask(taskList[index].task)
-  }
-
   function saveTask() {
     const updatedTasks = [...taskList]
     const currentDate = new Date().toLocaleString()
@@ -67,7 +62,7 @@ function Todolist() {
     } else if (sortType === SortTypes.ALPHABETICAL_AZ) {
       sortedTasks.sort((a, z) => customAlphabeticalSort(a.task, z.task))
     } else if (sortType === SortTypes.ALPHABETICAL_ZA) {
-      sortedTasks.sort((a, z) => customAlphabeticalSort(a.task, z.task))
+      sortedTasks.sort((a, z) => customAlphabeticalSort(z.task, a.task))
     }
     setTaskList(sortedTasks)
   }
@@ -75,12 +70,9 @@ function Todolist() {
     const lowerA = strA.toLowerCase()
     const lowerB = strB.toLowerCase()
 
-    if (lowerA < lowerB) return -1
-    if (lowerA > lowerB) return 1
-    if (strA < strB) return -1
-    if (strA > strB) return 1
-    return 0
+    return lowerA.localeCompare(lowerB)
   }
+
   return (
     <div className="flex justify-center items-start h-screen">
       <div className="w-80 h-70 flex flex-col items-center bg-red-400 mt-4 rounded-md">
@@ -122,7 +114,6 @@ function Todolist() {
                 setEditedTask={setEditedTask}
                 saveTask={saveTask}
                 confirmDeleteTask={confirmDeleteTask}
-                editTask={editTask}
               />
             ))}
           </div>
