@@ -1,28 +1,55 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Button from './Button.jsx'
 import PropTypes from 'prop-types'
 
-const TaskItem = ({
-  taskItem,
-  index,
-  editIndex,
-  editedTask,
-  setEditedTask,
-  saveTask,
-  setEditIndex,
-  confirmDeleteTask,
-}) => {
-  const editTask = (index) => {
-    setEditIndex(index)
+const TaskItem = ({ taskItem, index, taskList, setTaskList }) => {
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedTask, setEditedTask] = useState(taskItem.task)
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [deleteIndex, setDeleteIndex] = useState(null)
+
+  const handleEdit = () => {
+    setIsEditing(true)
     setEditedTask(taskItem.task)
   }
-  const handleDeleteTask = () => {
-    confirmDeleteTask(index)
+
+  const handleDelete = (index) => {
+    setDeleteIndex(index)
+    setShowConfirmation(true)
+  }
+
+  const confirmDelete = () => {
+    if (deleteIndex !== null) {
+      const updatedTasks = [...taskList]
+      updatedTasks.splice(deleteIndex, 1)
+      setTaskList(updatedTasks)
+      setShowConfirmation(false)
+      setDeleteIndex(null)
+    }
+  }
+
+  const cancelDelete = () => {
+    setShowConfirmation(false)
+    setDeleteIndex(null)
+  }
+
+  const handleSaveTask = () => {
+    const updatedTasks = [...taskList]
+    const currentDate = new Date().toLocaleString()
+
+    updatedTasks[index] = {
+      ...updatedTasks[index],
+      task: editedTask,
+      dateTime: currentDate,
+    }
+
+    setTaskList(updatedTasks)
+    setIsEditing(false)
   }
 
   return (
     <div key={index} className="bg-gray-200 p-3 mb-4 mx-1 rounded-md">
-      {editIndex === index ? (
+      {isEditing ? (
         <>
           <input
             className="border border-black px-3 py-2 mr-2 rounded"
@@ -30,17 +57,28 @@ const TaskItem = ({
             type="text"
             value={editedTask}
           />
-          <Button text="Save" onClick={saveTask} type="bg-blue-500" />
+          <Button text="Save" onClick={handleSaveTask} type="bg-blue-500" />
         </>
       ) : (
         <>
           <p className="mb-2 font-semibold">Task: {taskItem.task}</p>
-          <p className="mb-2 font-semibold">Date & Time: {taskItem.dateTime}</p>
+          <p className="mb-2  font-semibold">Date & Time: {taskItem.dateTime}</p>
           <div className="flex">
-            <Button text="Delete task" onClick={handleDeleteTask} type="bg-red-500" />
-            <Button text="Edit task" onClick={() => editTask(index)} type="bg-blue-500" />
+            <Button text="Delete task" onClick={() => handleDelete(index)} type="bg-red-500" />
+            <Button text="Edit task" onClick={handleEdit} type="bg-blue-500" />
           </div>
         </>
+      )}
+      {showConfirmation && (
+        <div className="confirmation-modal">
+          <p className="mb-2 px-3 mt-2 font-semibold bg-red-300 rounded-md">
+            Are you sure you want to delete this task?
+          </p>
+          <div className="flex">
+            <Button text="Yes" onClick={confirmDelete} type="bg-red-500" />
+            <Button text="No" onClick={cancelDelete} type="bg-cyan-500" />
+          </div>
+        </div>
       )}
     </div>
   )
@@ -52,13 +90,8 @@ TaskItem.propTypes = {
     dateTime: PropTypes.string,
   }).isRequired,
   index: PropTypes.number.isRequired,
-  editIndex: PropTypes.number.isRequired,
-  editedTask: PropTypes.string.isRequired,
-  setEditedTask: PropTypes.func.isRequired,
-  saveTask: PropTypes.func.isRequired,
-  setEditIndex: PropTypes.func.isRequired,
-  deleteTask: PropTypes.func.isRequired, // PropType pour deleteTask
-  confirmDeleteTask: PropTypes.func.isRequired, // PropType pour confirmDeleteTask
+  taskList: PropTypes.array.isRequired,
+  setTaskList: PropTypes.func.isRequired,
 }
 
 export default TaskItem
