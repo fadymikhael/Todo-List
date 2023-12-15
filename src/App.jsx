@@ -83,13 +83,12 @@ function Todolist() {
             <option value={SortTypes.ALPHABETICAL_ZA}>Alphabetically Z-A</option>
           </select>
           <div>
-            {taskList.map((taskItem, index) => (
+            {taskList.map((taskItem) => (
               <TaskItem
                 key={taskItem.id}
                 taskItem={taskItem}
                 taskList={taskList}
                 setTaskList={setTaskList}
-                index={index}
               />
             ))}
           </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Button from './Button.jsx'
 import PropTypes from 'prop-types'
 
-const TaskItem = ({ taskItem, index, taskList, setTaskList }) => {
+const TaskItem = ({ taskItem, taskList, setTaskList }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [editedTask, setEditedTask] = useState(taskItem.task)
   const [showConfirmation, setShowConfirmation] = useState(false)
@@ -13,8 +13,8 @@ const TaskItem = ({ taskItem, index, taskList, setTaskList }) => {
     setEditedTask(taskItem.task)
   }
 
-  const handleDelete = (index) => {
-    setDeleteIndex(index)
+  const handleDelete = (taskItem) => {
+    setDeleteIndex(taskItem)
     setShowConfirmation(true)
   }
 
@@ -37,8 +37,8 @@ const TaskItem = ({ taskItem, index, taskList, setTaskList }) => {
     const updatedTasks = [...taskList]
     const currentDate = new Date().toLocaleString()
 
-    updatedTasks[index] = {
-      ...updatedTasks[index],
+    updatedTasks[taskItem] = {
+      ...updatedTasks[taskItem],
       task: editedTask,
       dateTime: currentDate,
     }
@@ -48,7 +48,7 @@ const TaskItem = ({ taskItem, index, taskList, setTaskList }) => {
   }
 
   return (
-    <div key={index} className="bg-gray-200 p-3 mb-4 mx-1 rounded-md">
+    <div key={taskItem} className="bg-gray-200 p-3 mb-4 mx-1 rounded-md">
       {isEditing ? (
         <>
           <input
@@ -64,7 +64,7 @@ const TaskItem = ({ taskItem, index, taskList, setTaskList }) => {
           <p className="mb-2 font-semibold">Task: {taskItem.task}</p>
           <p className="mb-2  font-semibold">Date & Time: {taskItem.dateTime}</p>
           <div className="flex">
-            <Button text="Delete task" onClick={() => handleDelete(index)} type="bg-red-500" />
+            <Button text="Delete task" onClick={() => handleDelete(taskItem)} type="bg-red-500" />
             <Button text="Edit task" onClick={handleEdit} type="bg-blue-500" />
           </div>
         </>
@@ -89,7 +89,6 @@ TaskItem.propTypes = {
     task: PropTypes.string,
     dateTime: PropTypes.string,
   }).isRequired,
-  index: PropTypes.number.isRequired,
   taskList: PropTypes.array.isRequired,
   setTaskList: PropTypes.func.isRequired,
 }
