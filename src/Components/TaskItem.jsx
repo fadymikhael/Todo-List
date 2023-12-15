@@ -37,10 +37,16 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
     const updatedTasks = [...taskList]
     const currentDate = new Date().toLocaleString()
 
-    updatedTasks[taskItem] = {
-      ...updatedTasks[taskItem],
-      task: editedTask,
-      dateTime: currentDate,
+    for (let i = 0; i < updatedTasks.length; i++) {
+      if (updatedTasks[i] === taskItem) {
+        updatedTasks[i] = {
+          ...updatedTasks[i],
+          task: editedTask,
+          dateTime: currentDate,
+        }
+
+        break
+      }
     }
 
     setTaskList(updatedTasks)
