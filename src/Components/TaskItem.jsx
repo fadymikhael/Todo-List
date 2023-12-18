@@ -16,7 +16,6 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
     if (confirmed) {
       const updatedTasks = taskList.filter((item) => item.id !== taskItem.id)
       setTaskList(updatedTasks)
-      console.log(confirmed)
     }
   }
 
@@ -24,10 +23,10 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
     const updatedTasks = [...taskList]
     const currentDate = new Date().toLocaleString()
 
-    for (let id = 0; id < updatedTasks.length; id++) {
-      if (updatedTasks[id].id === taskItem.id) {
-        updatedTasks[id] = {
-          ...updatedTasks[id],
+    for (let i = 0; i < updatedTasks.length; i++) {
+      if (updatedTasks[i].id === taskItem.id) {
+        updatedTasks[i] = {
+          ...updatedTasks[i],
           task: editedTask,
           dateTime: currentDate,
         }
