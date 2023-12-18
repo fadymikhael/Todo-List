@@ -5,32 +5,18 @@ import PropTypes from 'prop-types'
 const TaskItem = ({ taskItem, taskList, setTaskList }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [editedTask, setEditedTask] = useState(taskItem.task)
-  const [showConfirmation, setShowConfirmation] = useState(false)
-  const [deleteIndex, setDeleteIndex] = useState(null)
 
   const handleEdit = () => {
     setIsEditing(true)
     setEditedTask(taskItem.task)
   }
 
-  const handleDelete = (taskItem) => {
-    setDeleteIndex(taskItem)
-    setShowConfirmation(true)
-  }
-
-  const confirmDelete = () => {
-    if (deleteIndex !== null) {
-      const updatedTasks = [...taskList]
-      updatedTasks.splice(deleteIndex, 1)
+  const handleDelete = () => {
+    const confirmed = window.confirm('Are you sure you want to delete this task?')
+    if (confirmed) {
+      const updatedTasks = taskList.filter((item) => item !== taskItem)
       setTaskList(updatedTasks)
-      setShowConfirmation(false)
-      setDeleteIndex(null)
     }
-  }
-
-  const cancelDelete = () => {
-    setShowConfirmation(false)
-    setDeleteIndex(null)
   }
 
   const handleSaveTask = () => {
@@ -44,7 +30,6 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
           task: editedTask,
           dateTime: currentDate,
         }
-
         break
       }
     }
@@ -68,23 +53,12 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
       ) : (
         <>
           <p className="mb-2 font-semibold">Task: {taskItem.task}</p>
-          <p className="mb-2  font-semibold">Date & Time: {taskItem.dateTime}</p>
+          <p className="mb-2 font-semibold">Date & Time: {taskItem.dateTime}</p>
           <div className="flex">
-            <Button text="Delete task" onClick={() => handleDelete(taskItem)} type="bg-red-500" />
+            <Button text="Delete task" onClick={handleDelete} type="bg-red-500" />
             <Button text="Edit task" onClick={handleEdit} type="bg-blue-500" />
           </div>
         </>
-      )}
-      {showConfirmation && (
-        <div className="confirmation-modal">
-          <p className="mb-2 px-3 mt-2 font-semibold bg-red-300 rounded-md">
-            Are you sure you want to delete this task?
-          </p>
-          <div className="flex">
-            <Button text="Yes" onClick={confirmDelete} type="bg-red-500" />
-            <Button text="No" onClick={cancelDelete} type="bg-cyan-500" />
-          </div>
-        </div>
       )}
     </div>
   )
