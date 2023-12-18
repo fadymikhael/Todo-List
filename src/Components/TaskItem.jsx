@@ -14,7 +14,7 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
   const handleDelete = () => {
     const confirmed = window.confirm('Are you sure you want to delete this task?')
     if (confirmed) {
-      const updatedTasks = taskList.filter((item) => item !== taskItem)
+      const updatedTasks = taskList.filter((id) => id !== taskItem)
       setTaskList(updatedTasks)
     }
   }
@@ -23,10 +23,10 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
     const updatedTasks = [...taskList]
     const currentDate = new Date().toLocaleString()
 
-    for (let i = 0; i < updatedTasks.length; i++) {
-      if (updatedTasks[i] === taskItem) {
-        updatedTasks[i] = {
-          ...updatedTasks[i],
+    for (let id = 0; id < updatedTasks.length; id++) {
+      if (updatedTasks[id] === taskItem) {
+        updatedTasks[id] = {
+          ...updatedTasks[id],
           task: editedTask,
           dateTime: currentDate,
         }
