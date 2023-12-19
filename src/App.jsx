@@ -18,7 +18,7 @@ function Todolist() {
 
   function addTask() {
     if (task.trim() !== '') {
-      const currentDate = new Date().toLocaleString()
+      const currentDate = new Date().toString()
       const newId = `component-${Math.random().toString(16).slice(2)}`
       const newTask = {
         id: newId,
