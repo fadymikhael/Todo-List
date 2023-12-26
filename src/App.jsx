@@ -1,61 +1,37 @@
 import React, { useState } from 'react'
 import './index.css'
 import './App.css'
-import Button from './Button.jsx'
+import Button from './components/Button.jsx'
+import TaskItem from './components/TaskItem.jsx'
+
 const SortTypes = {
   RECENT_DATE: 'RecentDate',
   OLD_DATE: 'oldDate',
   ALPHABETICAL_AZ: 'az',
   ALPHABETICAL_ZA: 'za',
 }
+
 function Todolist() {
   const [task, setTask] = useState('')
   const [taskList, setTaskList] = useState([])
-  const [editIndex, setEditIndex] = useState(-1)
-  const [editedTask, setEditedTask] = useState('')
   const [sortType, setSortType] = useState(SortTypes.RECENT_DATE)
 
   function addTask() {
     if (task.trim() !== '') {
-      const currentDate = new Date().toLocaleString()
+      const currentDate = new Date().toString()
+      const newId = `component-${Math.random().toString(16).slice(2)}`
       const newTask = {
+        id: newId,
         task: task,
         dateTime: currentDate,
       }
-      const updateTasklist = [...taskList, newTask]
-      setTaskList([...updateTasklist])
+      const updatedTaskList = [...taskList, newTask]
+      setTaskList(updatedTaskList)
       setTask('')
-      sortTasks(sortType, updateTasklist)
+      sortTasks(sortType, updatedTaskList)
     }
   }
 
-  function confirmDeleteTask(index) {
-    const confirmation = window.confirm('Are you sure you want to delete this task?')
-    if (confirmation) {
-      deleteTask(index)
-    }
-  }
-
-  function deleteTask(index) {
-    const updatedTasks = [...taskList]
-    updatedTasks.splice(index, 1)
-    setTaskList(updatedTasks)
-  }
-
-  function editTask(index) {
-    setEditIndex(index)
-    setEditedTask(taskList[index].task)
-  }
-
-  function saveTask() {
-    const updatedTasks = [...taskList]
-    const currentDate = new Date().toLocaleString()
-    updatedTasks[editIndex].task = editedTask
-    updatedTasks[editIndex].dateTime = currentDate
-    setTaskList(updatedTasks)
-    setEditIndex(-1)
-    setEditedTask('')
-  }
   function sortTasks(sortType, updateTasklist) {
     const sortedTasks = [...updateTasklist]
     if (sortType === SortTypes.RECENT_DATE) {
@@ -63,11 +39,18 @@ function Todolist() {
     } else if (sortType === SortTypes.OLD_DATE) {
       sortedTasks.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
     } else if (sortType === SortTypes.ALPHABETICAL_AZ) {
-      sortedTasks.sort((a, z) => a.task.localeCompare(z.task))
+      sortedTasks.sort((a, z) => customAlphabeticalSort(a.task, z.task))
     } else if (sortType === SortTypes.ALPHABETICAL_ZA) {
-      sortedTasks.sort((a, z) => z.task.localeCompare(a.task))
+      sortedTasks.sort((a, z) => customAlphabeticalSort(z.task, a.task))
     }
+
     setTaskList(sortedTasks)
+  }
+
+  function customAlphabeticalSort(strA, strB) {
+    const lowerA = strA.toLowerCase()
+    const lowerB = strB.toLowerCase()
+    return lowerA.localeCompare(lowerB)
   }
 
   return (
@@ -99,39 +82,20 @@ function Todolist() {
             <option value={SortTypes.ALPHABETICAL_AZ}>Alphabetically A-Z</option>
             <option value={SortTypes.ALPHABETICAL_ZA}>Alphabetically Z-A</option>
           </select>
-        </div>
-        <div>
-          {taskList.map((taskItem, index) => (
-            <div key={index} className="bg-gray-200 p-3 mb-4 mx-1 rounded-md">
-              {editIndex === index ? (
-                <>
-                  <input
-                    className="border border-black px-3 py-2 mr-2 rounded"
-                    onChange={(e) => setEditedTask(e.target.value)}
-                    type="text"
-                    value={editedTask}
-                  />
-                  <Button text="Save" onClick={saveTask} type="bg-blue-500" />
-                </>
-              ) : (
-                <>
-                  <p className="mb-2 font-semibold">Task: {taskItem.task}</p>
-                  <p className="mb-2 font-semibold">Date & Time: {taskItem.dateTime}</p>
-                  <div className="flex">
-                    <Button
-                      text="Delete task"
-                      onClick={() => confirmDeleteTask(index)}
-                      type="bg-red-500"
-                    />
-                    <Button text="Edit task" onClick={() => editTask(index)} type="bg-blue-500" />
-                  </div>
-                </>
-              )}
-            </div>
-          ))}
+          <div>
+            {taskList.map((taskItem) => (
+              <TaskItem
+                key={taskItem.id}
+                taskItem={taskItem}
+                taskList={taskList}
+                setTaskList={setTaskList}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
   )
 }
+
 export default Todolist
