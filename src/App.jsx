@@ -15,15 +15,22 @@ function Todolist() {
   const [task, setTask] = useState('')
   const [taskList, setTaskList] = useState([])
   const [sortType, setSortType] = useState(SortTypes.RECENT_DATE)
-
   function addTask() {
     if (task.trim() !== '') {
-      const currentDate = new Date().toString()
+      const currentDate = new Date()
+      const formattedDate = currentDate.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      })
       const newId = `component-${Math.random().toString(16).slice(2)}`
       const newTask = {
         id: newId,
         task: task,
-        dateTime: currentDate,
+        dateTime: formattedDate,
       }
       const updatedTaskList = [...taskList, newTask]
       setTaskList(updatedTaskList)
