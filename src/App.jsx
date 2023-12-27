@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import './index.css'
 import './App.css'
-import Button from './components/Button.jsx'
-import TaskItem from './components/TaskItem.jsx'
+import Button from './Components/Button.jsx'
+import TaskItem from './Components/TaskItem.jsx'
 
 const SortTypes = {
   RECENT_DATE: 'RecentDate',
@@ -10,7 +10,6 @@ const SortTypes = {
   ALPHABETICAL_AZ: 'az',
   ALPHABETICAL_ZA: 'za',
 }
-
 function Todolist() {
   const [task, setTask] = useState('')
   const [taskList, setTaskList] = useState([])
