@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import './index.css'
 import './App.css'
-import Button from './components/Button.jsx'
-import TaskItem from './components/TaskItem.jsx'
+import Button from './Components/Button.jsx'
+import TaskItem from './Components/TaskItem.jsx'
 
 const SortTypes = {
   RECENT_DATE: 'RecentDate',
@@ -10,20 +10,26 @@ const SortTypes = {
   ALPHABETICAL_AZ: 'az',
   ALPHABETICAL_ZA: 'za',
 }
-
 function Todolist() {
   const [task, setTask] = useState('')
   const [taskList, setTaskList] = useState([])
   const [sortType, setSortType] = useState(SortTypes.RECENT_DATE)
-
   function addTask() {
     if (task.trim() !== '') {
-      const currentDate = new Date().toString()
+      const currentDate = new Date()
+      const formattedDate = currentDate.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      })
       const newId = `component-${Math.random().toString(16).slice(2)}`
       const newTask = {
         id: newId,
         task: task,
-        dateTime: currentDate,
+        dateTime: formattedDate,
       }
       const updatedTaskList = [...taskList, newTask]
       setTaskList(updatedTaskList)
@@ -69,7 +75,7 @@ function Todolist() {
         <div>
           <label>Sort tasks by : </label>
           <select
-            className=" mx-2"
+            className=" mx-4 mb-2 rounded"
             name="tasks"
             value={sortType}
             onChange={(e) => {

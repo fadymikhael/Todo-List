@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Button from './Button.jsx'
 import PropTypes from 'prop-types'
+import { EditIcon, DeleteIcon } from './IconComponent.jsx'
 
 const TaskItem = ({ taskItem, taskList, setTaskList }) => {
   const [isEditing, setIsEditing] = useState(false)
@@ -9,6 +10,11 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
   const handleEdit = () => {
     setIsEditing(true)
     setEditedTask(taskItem.task)
+  }
+
+  const handleCancel = () => {
+    setEditedTask(taskItem.task)
+    setIsEditing(false)
   }
 
   const handleDelete = () => {
@@ -21,7 +27,14 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
 
   const handleSaveTask = () => {
     const updatedTasks = [...taskList]
-    const currentDate = new Date().toLocaleString()
+    const currentDate = new Date().toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    })
 
     for (let i = 0; i < updatedTasks.length; i++) {
       if (updatedTasks[i].id === taskItem.id) {
@@ -43,20 +56,23 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
       {isEditing ? (
         <>
           <input
-            className="border border-black px-3 py-2 mr-2 rounded"
+            className="border border-black p-2 mb-3 rounded"
             onChange={(e) => setEditedTask(e.target.value)}
             type="text"
             value={editedTask}
           />
-          <Button text="Save" onClick={handleSaveTask} type="bg-blue-500" />
+          <div>
+            <Button text="Save" onClick={handleSaveTask} type="bg-blue-500" />
+            <Button text="Cancel" onClick={handleCancel} type="bg-red-500" />
+          </div>
         </>
       ) : (
         <>
           <p className="mb-2 font-semibold">Task: {taskItem.task}</p>
           <p className="mb-2 font-semibold">Date & Time: {taskItem.dateTime}</p>
           <div className="flex">
-            <Button text="Delete task" onClick={handleDelete} type="bg-red-500" />
-            <Button text="Edit task" onClick={handleEdit} type="bg-blue-500" />
+            <Button text={<DeleteIcon />} onClick={handleDelete} type="bg-red-500" />
+            <Button text={<EditIcon />} onClick={handleEdit} type="bg-green-500" />
           </div>
         </>
       )}
