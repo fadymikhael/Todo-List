@@ -1,15 +1,34 @@
 import React, { useState } from 'react'
-import Button from './Button.jsx'
 import PropTypes from 'prop-types'
-import { EditIcon, DeleteIcon } from './IconComponent.jsx'
+import { Cancel, Save } from './Button' // Import des composants bouton, en supposant que CancelBtn est le bouton Cancel
+import { EditIcon, BinIcon } from './IconComponent'
 
 const TaskItem = ({ taskItem, taskList, setTaskList }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [editedTask, setEditedTask] = useState(taskItem.task)
+  const taskTextStyle = {
+    display: 'block',
+    marginTop: '0.5rem',
+    marginBottom: '0.5rem',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    maxWidth: '100%',
+    color: 'white',
+  }
+  const containerStyle = {
+    background: 'radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)',
+    padding: '1rem',
+    marginBottom: '1rem',
+    marginInlineStart: '0.25rem',
+    marginInlineEnd: '0.25rem',
+    borderRadius: '0.375rem',
+    maxWidth: '100%',
+    boxSizing: 'border-box',
+  }
 
   const handleEdit = () => {
     setIsEditing(true)
-    setEditedTask(taskItem.task)
   }
 
   const handleCancel = () => {
@@ -18,61 +37,73 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
   }
 
   const handleDelete = () => {
-    const confirmed = window.confirm('Are you sure you want to delete this task?')
-    if (confirmed) {
-      const updatedTasks = taskList.filter((item) => item.id !== taskItem.id)
-      setTaskList(updatedTasks)
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      setTaskList(taskList.filter((item) => item.id !== taskItem.id))
     }
   }
 
   const handleSaveTask = () => {
-    const updatedTasks = [...taskList]
-    const currentDate = new Date().toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-    })
-
-    for (let i = 0; i < updatedTasks.length; i++) {
-      if (updatedTasks[i].id === taskItem.id) {
-        updatedTasks[i] = {
-          ...updatedTasks[i],
-          task: editedTask,
-          dateTime: currentDate,
-        }
-        break
-      }
-    }
+    const updatedTasks = taskList.map((item) =>
+      item.id === taskItem.id
+        ? { ...item, task: editedTask, dateTime: new Date().toLocaleString() }
+        : item
+    )
 
     setTaskList(updatedTasks)
     setIsEditing(false)
   }
 
+  function toggleTaskCompletion(taskId) {
+    const updatedTaskList = taskList.map((task) =>
+      task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task
+    )
+    setTaskList(updatedTaskList)
+  }
+
   return (
-    <div key={taskItem} className="bg-gray-200 p-3 mb-4 mx-1 rounded-md">
+    <div style={containerStyle}>
       {isEditing ? (
         <>
           <input
             className="border border-black p-2 mb-3 rounded"
+            value={editedTask}
             onChange={(e) => setEditedTask(e.target.value)}
             type="text"
-            value={editedTask}
           />
-          <div>
-            <Button text="Save" onClick={handleSaveTask} type="bg-blue-500" />
-            <Button text="Cancel" onClick={handleCancel} type="bg-red-500" />
+          <div className="flex">
+            {' '}
+            {/* Conteneur flex pour placer les boutons côte à côte */}
+            <Save text="Save Task" onClick={handleSaveTask} />
+            <Cancel text="Cancel" onClick={handleCancel} />
           </div>
         </>
       ) : (
         <>
-          <p className="mb-2 font-semibold">Task: {taskItem.task}</p>
+          <div className="flex items-center">
+            <p
+              style={{
+                ...taskTextStyle,
+                textDecoration: taskItem.isCompleted ? 'line-through' : 'none',
+                color: taskItem.isCompleted ? 'black' : 'white',
+              }}
+              className={`ml-2`}
+            >
+              {taskItem.task}
+            </p>
+          </div>
           <p className="mb-2 font-semibold">Date & Time: {taskItem.dateTime}</p>
           <div className="flex">
-            <Button text={<DeleteIcon />} onClick={handleDelete} type="bg-red-500" />
-            <Button text={<EditIcon />} onClick={handleEdit} type="bg-green-500" />
+            <BinIcon onClick={handleDelete} />
+            <EditIcon onClick={handleEdit} />
+            <label className="custom-checkbox">
+              <input
+                name="dummy"
+                type="checkbox"
+                checked={taskItem.isCompleted}
+                onChange={() => toggleTaskCompletion(taskItem.id)}
+              />
+              <span className="checkmark" />
+            </label>
           </div>
         </>
       )}
@@ -82,11 +113,12 @@ const TaskItem = ({ taskItem, taskList, setTaskList }) => {
 
 TaskItem.propTypes = {
   taskItem: PropTypes.shape({
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    task: PropTypes.string,
-    dateTime: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    task: PropTypes.string.isRequired,
+    dateTime: PropTypes.string.isRequired,
+    isCompleted: PropTypes.bool,
   }).isRequired,
-  taskList: PropTypes.array.isRequired,
+  taskList: PropTypes.arrayOf(PropTypes.object).isRequired,
   setTaskList: PropTypes.func.isRequired,
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './index.css'
 import './App.css'
-import Button from './Components/Button.jsx'
+import { Button } from './Components/Button.jsx'
 import TaskItem from './Components/TaskItem.jsx'
 
 const SortTypes = {
@@ -10,10 +10,12 @@ const SortTypes = {
   ALPHABETICAL_AZ: 'az',
   ALPHABETICAL_ZA: 'za',
 }
+
 function Todolist() {
   const [task, setTask] = useState('')
   const [taskList, setTaskList] = useState([])
   const [sortType, setSortType] = useState(SortTypes.RECENT_DATE)
+
   function addTask() {
     if (task.trim() !== '') {
       const currentDate = new Date()
@@ -60,22 +62,42 @@ function Todolist() {
   }
 
   return (
-    <div className="flex justify-center items-start h-screen">
-      <div className="w-80 h-70 flex flex-col items-center bg-red-400 mt-4 rounded-md">
-        <h1 className="text-center text-3xl mb-4 font-serif font-semibold">Todo list</h1>
-        <div className="mb-3 flex items-center">
+    <div className="flex justify-center items-start h-screen bg-gray-200">
+      <div className="w-140 h-100 flex flex-col items-center bg-white mt-8 rounded-md shadow-md">
+        <h1 className="text-center text-4xl my-6 font-serif font-semibold text-gray-800">
+          Todo list
+        </h1>
+        <div className="mb-6 flex items-center">
           <input
-            className="border border-black px-3 py-2 mr-2 rounded"
+            className="border border-gray-400 px-4 py-3 mr-4 ml-2 rounded"
             onChange={(e) => setTask(e.target.value)}
             type="text"
             value={task}
           />
-          <Button text="Add task" onClick={addTask} type="bg-green-500" />
+          <Button text="Add task" onClick={addTask} />
         </div>
-        <div>
-          <label>Sort tasks by : </label>
+        <div className="relative group rounded-lg w-64 my-3 bg-gray-200 overflow-hidden before:absolute before:w-12 before:h-12 before:content[''] before:right-0 before:bg-blue-500 before:rounded-full before:blur-lg before:[box-shadow:-60px_20px_10px_10px_#F9B0B9]">
+          <svg
+            y="0"
+            xmlns="http://www.w3.org/2000/svg"
+            x="0"
+            width="100"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="xMidYMid meet"
+            height="100"
+            className="w-8 h-8 absolute right-0 -rotate-45 stroke-green-300 top-1.5 group-hover:rotate-0 duration-300"
+          >
+            <path
+              strokeWidth="4"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              fill="none"
+              d="M60.7,53.6,50,64.3m0,0L39.3,53.6M50,64.3V35.7m0,46.4A32.1,32.1,0,1,1,82.1,50,32.1,32.1,0,0,1,50,82.1Z"
+              className="svg-stroke-primary"
+            />
+          </svg>
           <select
-            className=" mx-4 mb-2 rounded"
+            className="appearance-none hover:placeholder-shown:bg-emerald-500 relative text-pink-400 bg-transparent ring-0 outline-none border border-neutral-500 text-neutral-900 placeholder-violet-700 text-sm font-bold rounded-lg focus:ring-violet-500 focus:border-violet-500 block w-full p-2.5"
             name="tasks"
             value={sortType}
             onChange={(e) => {
@@ -88,16 +110,16 @@ function Todolist() {
             <option value={SortTypes.ALPHABETICAL_AZ}>Alphabetically A-Z</option>
             <option value={SortTypes.ALPHABETICAL_ZA}>Alphabetically Z-A</option>
           </select>
-          <div>
-            {taskList.map((taskItem) => (
-              <TaskItem
-                key={taskItem.id}
-                taskItem={taskItem}
-                taskList={taskList}
-                setTaskList={setTaskList}
-              />
-            ))}
-          </div>
+        </div>
+        <div>
+          {taskList.map((taskItem) => (
+            <TaskItem
+              key={taskItem.id}
+              taskItem={taskItem}
+              taskList={taskList}
+              setTaskList={setTaskList}
+            />
+          ))}
         </div>
       </div>
     </div>
