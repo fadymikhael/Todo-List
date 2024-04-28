@@ -13,8 +13,9 @@ This Todolist App is a simple yet powerful tool for managing your tasks effectiv
 
 
 <p align="center">
-  <img alt="Todolist App Demo" src="https://i.postimg.cc/bvZ9P8KH/Todo-List.gif" width="600"/>
+  <img alt="Todolist App Demo" src="https://s4.ezgif.com/tmp/ezgif-4-f645c97c08.gif" width="600"/>
 </p>
+
 
 
 ## Features
