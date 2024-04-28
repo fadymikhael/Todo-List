@@ -5,14 +5,11 @@ This Todolist App is a simple web application designed to help users manage thei
 This Todolist App is a simple yet powerful tool for managing your tasks effectively. ✅
 
 <p align="center">
-    <img alt="HTML" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" width="50" height="50"/>
-  <img alt="React" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" width="50" height="50"/>
   <img alt="JavaScript" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" width="50" height="50"/>
+    <img alt="React" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" width="50" height="50"/>
+    <img alt="HTML" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" width="50" height="50"/>
   <img alt="Tailwind CSS" src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" width="50" height="50"/>
 </p>
-
-
-
 
 ![Todo-List](https://github.com/fadymikhael/Todo-List/assets/60393846/12fc2bd6-0997-41a6-931a-f5c50ac40610)
 
