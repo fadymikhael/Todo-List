@@ -13,13 +13,8 @@ This Todolist App is a simple yet powerful tool for managing your tasks effectiv
 
 
 
-<p align="center">
-  <img alt="Todolist App Demo" src="https://s4.ezgif.com/tmp/ezgif-4-f645c97c08.gif" width="600"/>
-</p>
 
-<p align="center">
-  <img alt="Todolist App Demo" src="https://s4.ezgif.com/tmp/ezgif-4-457a5f65a8.gif" width="600"/>
-</p>
+![Todo-List](https://github.com/fadymikhael/Todo-List/assets/60393846/12fc2bd6-0997-41a6-931a-f5c50ac40610)
 
 
 
